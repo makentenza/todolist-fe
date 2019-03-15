@@ -83,7 +83,13 @@ pipeline {
                 sh 'npm run test'
 
                 echo '### Running build ###'
-                sh 'npm run build:ci:${NODE_ENV}'
+                sh '''
+                    if [ -z "${NODE_ENV}" ];then
+                      npm run build:ci
+                    else
+                      npm run build:ci:${NODE_ENV}
+                    fi
+                '''
 
                 echo '### Packaging App for Nexus ###'
                 sh 'npm run package'
